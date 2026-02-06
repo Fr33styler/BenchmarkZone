@@ -6,7 +6,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -14,9 +13,6 @@ public class Main {
     private static final Pattern FROM_HEX_PATTERN = Pattern.compile("&(#[a-fA-F0-9]{6})");
     private static final Pattern TO_HEX_PATTERN =
             Pattern.compile("[§&]x[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])");
-
-
-    private static final Set<Character> CHARACTERS = Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
