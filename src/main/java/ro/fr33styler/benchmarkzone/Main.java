@@ -10,9 +10,8 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static final Pattern FROM_HEX_PATTERN = Pattern.compile("&(#[a-fA-F0-9]{6})");
-    private static final Pattern TO_HEX_PATTERN =
-            Pattern.compile("[§&]x[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])[§&]([a-fA-F0-9])");
+    private static final Pattern FROM_HEX_PATTERN = Pattern.compile("&?(#[a-fA-F0-9]{6})");
+    private static final Pattern TO_HEX_PATTERN = Pattern.compile("[§&]x(?:[§&][a-fA-F0-9]){6}");
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
@@ -33,7 +32,17 @@ public class Main {
     }
 
     public static String toHexPattern(String text) {
-        return TO_HEX_PATTERN.matcher(text).replaceAll("#$1$2$3$4$5$6");
+        return TO_HEX_PATTERN.matcher(text).replaceAll(result -> {
+            String hex = result.group();
+
+            char[] chars = new char[7];
+            chars[0] = '#';
+            for (int i = 1; i < 7; i++) {
+                chars[i] = hex.charAt(i * 2 + 1);
+            }
+
+            return new String(chars);
+        });
     }
 
     public static String fromHexPattern(String text) {
